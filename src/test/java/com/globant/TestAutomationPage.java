@@ -6,29 +6,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 
 public class TestAutomationPage {
     private static WebDriver driver;
 
-    @BeforeSuite
+    @BeforeClass
     private void initDriver() {
         TestAutomationPage.driver = TestUtils.getWebDriver();
-    }
-
-    @BeforeTest
-    private void goToLoginPage() {
         TestAutomationPage.driver.get("https://practicetestautomation.com/practice-test-login/");
     }
 
-    @AfterSuite
+    @AfterClass
     private void closeDriver() {
         TestAutomationPage.driver.close();
+        TestAutomationPage.driver = null;
     }
 
     @Test

@@ -6,30 +6,26 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class TestLoginHerokuPage {
     private static WebDriver driver;
+    private static WebDriverWait wait;
 
-    @BeforeSuite
+    @BeforeClass
     private void initDriver() {
         TestLoginHerokuPage.driver = TestUtils.getWebDriver();
-    }
-
-    @BeforeTest
-    private void goToLoginPage() {
+        TestLoginHerokuPage.wait = new WebDriverWait(driver, Duration.ofSeconds(10).getSeconds());
         TestLoginHerokuPage.driver.get("https://the-internet.herokuapp.com/login");
     }
 
-    @AfterSuite
+    @AfterClass
     private void closeDriver() {
         TestLoginHerokuPage.driver.close();
+        TestLoginHerokuPage.driver = null;
     }
 
     @Test
@@ -47,8 +43,7 @@ public class TestLoginHerokuPage {
 
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10).getSeconds());
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href=\"/logout\"].button.secondary.radius")));
+        WebElement element = TestLoginHerokuPage.wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href=\"/logout\"].button.secondary.radius")));
         Assert.assertEquals("Logout", element.getText());
 
         element.click();
